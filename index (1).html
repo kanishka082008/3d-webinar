@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>CampusConnect - Student Portal</title>
+  <style>
+    :root {
+      --color-bg-primary: #ffffff;
+      --color-bg-secondary: #f8f9fa;
+      --color-bg-dark: #1a1a1a;
+      --color-text-primary: #1a1a1a;
+      --color-text-secondary: #666666;
+      --color-text-light: #999999;
+      --color-accent-purple: #6c5ce7;
+      --color-accent-blue: #0984e3;
+      --color-accent-green: #00b894;
+      --color-accent-orange: #fdaa3e;
+      --color-accent-red: #d63031;
+      --color-border: #e0e0e0;
+      --color-success: #00b894;
+      --color-error: #d63031;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary: #1a1a1a;
+        --color-bg-secondary: #252525;
+        --color-bg-dark: #0a0a0a;
+        --color-text-primary: #ffffff;
+        --color-text-secondary: #cccccc;
+        --color-text-light: #999999;
+        --color-border: #333333;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 280px;
+      background-color: var(--color-bg-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+      overflow-y: auto;
+      flex-shrink: 0;
+      max-height: 100vh;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .sidebar-logo {
+      width: 40px;
+      height: 40px;
+      background-color: var(--color-accent-purple);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .sidebar-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .sidebar-subtitle {
+      font-size: 12px;
+      color: var(--color-text-light);
+    }
+
+    .nav-menu {
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: var(--color-bg-secondary);
+      color: var(--color-accent-purple);
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+      min-width: 0;
+    }
+
+    /* TOP BAR */
+    .top-bar {
+      background-color: var(--color-bg-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      font-size: 14px;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--color-text-light);
+    }
+
+    .top-bar-right {
+      display: flex;
+      gap: var(--spacing-lg);
+      align-items: center;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--color-accent-purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* GREETING & GRID */
+    .greeting-section {
+      background-color: var(--color-bg-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .greeting-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .greeting-subtitle {
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-lg);
+      line-height: 1.6;
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+
+    .stat-card {
+      background-color: var(--color-bg-secondary);
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--color-accent-purple);
+    }
+
+    .stat-icon {
+      font-size: 24px;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-top: var(--spacing-xs);
+    }
+
+    /* DASHBOARD GRID */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    .card {
+      background-color: var(--color-bg-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--spacing-md);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .card-link {
+      color: var(--color-accent-blue);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .schedule-item {
+      padding: var(--spacing-md);
+      border-left: 3px solid var(--color-accent-purple);
+      margin-bottom: var(--spacing-md);
+      background-color: var(--color-bg-secondary);
+      border-radius: var(--radius-sm);
+    }
+
+    .schedule-time {
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .schedule-title {
+      font-weight: 600;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .schedule-meta {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    .deadline-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .deadline-item:last-child {
+      border-bottom: none;
+    }
+
+    .deadline-info {
+      flex: 1;
+    }
+
+    .deadline-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .deadline-time {
+      font-size: 12px;
+      color: var(--color-text-light);
+    }
+
+    .deadline-badge {
+      background-color: var(--color-accent-red);
+      color: white;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .message-item {
+      padding: var(--spacing-md);
+      background-color: var(--color-bg-secondary);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .message-header {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .message-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--color-accent-purple);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .message-content {
+      flex: 1;
+    }
+
+    .message-sender {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .message-time {
+      font-size: 11px;
+      color: var(--color-text-light);
+    }
+
+    .message-text {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-xs);
+      line-height: 1.5;
+    }
+
+    /* RIGHT SIDEBAR */
+    .right-sidebar {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+
+    .announcement-card {
+      background: linear-gradient(135deg, #2c3e50 0%, #1a1a1a 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .announcement-tag {
+      display: inline-block;
+      background-color: var(--color-accent-purple);
+      color: white;
+      padding: 4px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .announcement-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+      line-height: 1.3;
+    }
+
+    .announcement-text {
+      font-size: 13px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+    }
+
+    .action-item {
+      background-color: var(--color-bg-primary);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .action-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .action-icon {
+      font-size: 32px;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .action-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    .gallery-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+
+    .gallery-item {
+      aspect-ratio: 16/9;
+      background-color: var(--color-bg-secondary);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-light);
+      font-size: 12px;
+      text-align: center;
+      padding: var(--spacing-md);
+    }
+
+    /* MODAL/FORM */
+    .modal-overlay {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: calc(100% - 2 * var(--spacing-lg));
+      max-width: 500px;
+      background: linear-gradient(135deg, #6c5ce7 0%, #5f3dc4 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .modal-icon {
+      font-size: 28px;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .modal-description {
+      font-size: 13px;
+      line-height: 1.6;
+      opacity: 0.95;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: var(--spacing-xs);
+      opacity: 0.9;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--spacing-md);
+      border: none;
+      border-radius: var(--radius-md);
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-input:focus {
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+    }
+
+    .btn {
+      padding: var(--spacing-md);
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: white;
+      color: var(--color-accent-purple);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .success-message,
+    .error-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: var(--spacing-xl);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      z-index: 2000;
+      text-align: center;
+      min-width: 300px;
+    }
+
+    .success-message {
+      color: var(--color-success);
+    }
+
+    .error-message {
+      color: var(--color-error);
+    }
+
+    .success-message.show,
+    .error-message.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .right-sidebar {
+        display: none;
+      }
+
+      .container {
+        padding: var(--spacing-sm);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-radius: 0;
+        max-height: auto;
+        padding: var(--spacing-md);
+      }
+
+      .main-content {
+        gap: var(--spacing-md);
+      }
+
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+      }
+
+      .search-bar {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid {
+        gap: var(--spacing-md);
+      }
+
+      .card {
+        padding: var(--spacing-md);
+      }
+
+      .modal-overlay {
+        width: calc(100% - 2 * var(--spacing-sm));
+        bottom: var(--spacing-sm);
+        right: var(--spacing-sm);
+        left: var(--spacing-sm);
+        max-width: none;
+      }
+
+      .greeting-title {
+        font-size: 24px;
+      }
+
+      .nav-link {
+        padding: var(--spacing-sm);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        padding: var(--spacing-md);
+      }
+
+      .greeting-title {
+        font-size: 20px;
+      }
+
+      .quick-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-overlay {
+        padding: var(--spacing-md);
+      }
+    }
+  
+    /* LOGIN + INTERACTION ENHANCEMENTS */
+    [hidden] { display: none !important; }
+    body { scroll-behavior: smooth; }
+    .login-screen {
+      min-height: 100vh; position: relative; overflow: hidden;
+      display: grid; place-items: center; padding: 28px;
+      color: #fff; isolation: isolate;
+      background: radial-gradient(circle at 15% 20%, #4935a8 0, transparent 35%),
+                  radial-gradient(circle at 85% 80%, #086e99 0, transparent 35%),
+                  linear-gradient(135deg, #10132b, #171a3d 55%, #101d32);
+    }
+    .login-screen::before, .login-screen::after {
+      content: ""; position: absolute; z-index: -1; border-radius: 32%;
+      filter: blur(1px); pointer-events: none; opacity: .65;
+      animation: floatShape 10s ease-in-out infinite;
+    }
+    .login-screen::before {
+      width: 220px; height: 220px; top: 8%; left: 9%;
+      border: 1px solid rgba(255,255,255,.3);
+      background: linear-gradient(135deg, rgba(142,115,255,.24), rgba(0,210,255,.06));
+      box-shadow: inset 0 0 45px rgba(255,255,255,.08), 0 20px 80px rgba(0,0,0,.12);
+      transform: rotate(24deg);
+    }
+    .login-screen::after {
+      width: 150px; height: 150px; right: 10%; bottom: 10%;
+      border: 1px solid rgba(255,255,255,.24);
+      background: linear-gradient(135deg, rgba(0,210,255,.2), rgba(142,115,255,.12));
+      animation-delay: -4s;
+    }
+    .login-orb {
+      position: absolute; z-index: -1; width: 72px; height: 72px; left: 20%;
+      top: 65%; border-radius: 50%;
+      background: linear-gradient(135deg, #9c8cff, #4ed8e8);
+      box-shadow: 0 0 55px rgba(106,133,255,.5);
+      animation: floatShape 7s ease-in-out infinite reverse;
+    }
+    .login-layout {
+      width: min(100%, 980px); display: grid;
+      grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 6vw, 72px);
+      align-items: center;
+    }
+    .login-intro { padding: 18px 0; }
+    .login-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 34px; }
+    .login-brand-mark {
+      display: grid; place-items: center; width: 48px; height: 48px;
+      border-radius: 15px; background: linear-gradient(135deg,#8977ff,#39c7dd);
+      font-weight: 800; box-shadow: 0 12px 35px rgba(80,90,220,.35);
+    }
+    .login-brand-name { font-weight: 750; font-size: 19px; letter-spacing: .2px; }
+    .login-brand-sub { color: rgba(255,255,255,.62); font-size: 12px; }
+    .login-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px;
+      border: 1px solid rgba(255,255,255,.17); border-radius: 99px;
+      background: rgba(255,255,255,.07); color: #d8d4ff; font-size: 12px;
+      margin-bottom: 20px; backdrop-filter: blur(10px);
+    }
+    .login-intro h1 {
+      max-width: 520px; font-size: clamp(38px, 5vw, 64px); line-height: 1.04;
+      letter-spacing: -2px; margin-bottom: 20px;
+    }
+    .login-intro h1 span {
+      background: linear-gradient(90deg,#b8adff,#76e8f0);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .login-intro p { max-width: 440px; color: rgba(255,255,255,.7); font-size: 15px; line-height: 1.8; }
+    .login-points { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .login-point {
+      border: 1px solid rgba(255,255,255,.13); border-radius: 12px;
+      background: rgba(255,255,255,.055); padding: 10px 12px;
+      color: rgba(255,255,255,.82); font-size: 12px;
+    }
+    .login-card {
+      position: relative; padding: clamp(24px, 4vw, 38px);
+      border: 1px solid rgba(255,255,255,.19); border-radius: 26px;
+      background: rgba(255,255,255,.105); backdrop-filter: blur(22px);
+      box-shadow: 0 28px 90px rgba(0,0,0,.28);
+      transform-style: preserve-3d; transition: transform .18s ease-out;
+    }
+    .login-card h2 { font-size: 27px; margin-bottom: 8px; }
+    .login-card .login-caption { color: rgba(255,255,255,.66); margin-bottom: 26px; font-size: 13px; }
+    .login-field { margin-bottom: 17px; }
+    .login-field label { display: block; margin-bottom: 8px; color: rgba(255,255,255,.88); font-size: 12px; font-weight: 600; }
+    .login-field input {
+      width: 100%; min-height: 48px; padding: 13px 14px; border-radius: 11px;
+      border: 1px solid rgba(255,255,255,.18); outline: none;
+      color: #fff; background: rgba(10,12,35,.35); font: inherit; font-size: 14px;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .login-field input::placeholder { color: rgba(255,255,255,.42); }
+    .login-field input:focus { border-color: #a99bff; box-shadow: 0 0 0 3px rgba(137,119,255,.2); background: rgba(10,12,35,.55); }
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 78px; }
+    .password-toggle {
+      position: absolute; top: 50%; right: 9px; transform: translateY(-50%);
+      border: 0; color: #d4ceff; background: transparent; padding: 7px;
+      cursor: pointer; font-size: 12px;
+    }
+    .login-options { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 4px 0 22px; font-size: 12px; color: rgba(255,255,255,.72); }
+    .login-options label { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+    .login-options input { accent-color: #9c8cff; }
+    .login-submit {
+      width: 100%; min-height: 49px; border: 0; border-radius: 12px;
+      color: #14142e; font-weight: 750; font-size: 14px; cursor: pointer;
+      background: linear-gradient(100deg,#c4baff,#79e7ef);
+      box-shadow: 0 12px 30px rgba(98,130,255,.2);
+      transition: transform .2s, box-shadow .2s, filter .2s;
+    }
+    .login-submit:hover { transform: translateY(-3px); box-shadow: 0 16px 35px rgba(98,130,255,.32); filter: saturate(1.1); }
+    .login-submit:active { transform: scale(.985); }
+    .login-note { margin-top: 17px; color: rgba(255,255,255,.5); font-size: 11px; line-height: 1.6; text-align: center; }
+    .login-error { display: none; color: #ffd0d0; background: rgba(214,48,49,.16); border: 1px solid rgba(255,130,130,.3); border-radius: 9px; padding: 10px 12px; font-size: 12px; margin-bottom: 14px; }
+    .login-error.show { display: block; }
+    .scroll-progress {
+      position: fixed; z-index: 3000; top: 0; left: 0; width: 0; height: 3px;
+      background: linear-gradient(90deg,#6c5ce7,#00c6d7); pointer-events: none;
+    }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .stat-card, .action-item, .announcement-card, .schedule-item, .message-item {
+      transform-style: preserve-3d; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .stat-card:hover, .schedule-item:hover, .message-item:hover { box-shadow: 0 12px 26px rgba(30,35,80,.09); }
+    .action-item:focus-visible, .nav-link:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid rgba(108,92,231,.5); outline-offset: 3px; }
+    .modal-overlay { display: none; }
+    .modal-overlay.open { display: block; animation: panelIn .25s ease; }
+    .help-close {
+      position: absolute; right: 12px; top: 10px; width: 32px; height: 32px;
+      border: 1px solid rgba(255,255,255,.3); border-radius: 50%;
+      color: #fff; background: rgba(255,255,255,.15); cursor: pointer; font-size: 20px;
+    }
+    .portal-toast {
+      position: fixed; z-index: 4000; left: 50%; bottom: 24px; transform: translate(-50%, 20px);
+      opacity: 0; pointer-events: none; max-width: min(90vw, 520px);
+      background: #17172b; color: white; padding: 13px 18px; border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.25); font-size: 13px; text-align: center;
+      transition: opacity .25s, transform .25s;
+    }
+    .portal-toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .dashboard-view { min-height: 100vh; }
+    .settings-contrast { filter: contrast(1.08) saturate(1.08); }
+    @keyframes floatShape { 0%,100% { translate: 0 0; rotate: 0deg; } 50% { translate: 0 -20px; rotate: 8deg; } }
+    @keyframes panelIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 760px) {
+      .login-layout { grid-template-columns: 1fr; max-width: 480px; gap: 20px; }
+      .login-intro { padding: 8px 0 0; }
+      .login-brand { margin-bottom: 22px; }
+      .login-intro h1 { font-size: clamp(35px, 10vw, 48px); letter-spacing: -1.3px; }
+      .login-intro p { font-size: 13px; }
+      .login-points { margin-top: 18px; }
+      .login-card { padding: 24px; }
+      .login-screen { padding: 24px 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <section class="login-screen" id="loginScreen" aria-label="CampusConnect login">
+    <div class="login-orb" aria-hidden="true"></div>
+    <div class="login-layout">
+      <div class="login-intro">
+        <div class="login-brand">
+          <div class="login-brand-mark">CC</div>
+          <div><div class="login-brand-name">CampusConnect</div><div class="login-brand-sub">Your campus, connected</div></div>
+        </div>
+        <div class="login-eyebrow">✦ STUDENT PORTAL · ONE PLACE</div>
+        <h1>Your campus life,<br><span>in sync.</span></h1>
+        <p>Stay on top of classes, assignments, campus updates, and conversations with faculty—all from one thoughtfully designed student portal.</p>
+        <div class="login-points">
+          <div class="login-point">◷ Class schedules</div>
+          <div class="login-point">✓ Assignment updates</div>
+          <div class="login-point">✦ Campus community</div>
+        </div>
+      </div>
+      <form class="login-card" id="loginForm">
+        <h2>Welcome back</h2>
+        <p class="login-caption">Sign in to continue to your student dashboard.</p>
+        <div class="login-error" id="loginError" role="alert">Enter a valid email and a password with at least 4 characters.</div>
+        <div class="login-field">
+          <label for="loginEmail">College email</label>
+          <input id="loginEmail" type="email" placeholder="you@college.edu" autocomplete="username" required>
+        </div>
+        <div class="login-field">
+          <label for="loginPassword">Password</label>
+          <div class="password-wrap">
+            <input id="loginPassword" type="password" placeholder="Enter your password" autocomplete="current-password" minlength="4" required>
+            <button class="password-toggle" type="button" id="togglePassword" aria-label="Show password">Show</button>
+          </div>
+        </div>
+        <div class="login-options">
+          <label><input type="checkbox" id="rememberMe"> Remember me</label>
+          <a href="#" id="forgotPassword" style="color:#c7c0ff;text-decoration:none;">Forgot password?</a>
+        </div>
+        <button class="login-submit" type="submit">Sign in to dashboard <span aria-hidden="true">→</span></button>
+        <p class="login-note">Demo sign-in: enter any valid email and a password of at least 4 characters. This front-end demo does not authenticate real student accounts.</p>
+      </form>
+    </div>
+  </section>
+  <div id="dashboardView" class="dashboard-view" hidden>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">CC</div>
+        <div>
+          <div class="sidebar-title">CampusConnect</div>
+          <div class="sidebar-subtitle">Student Portal</div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <li class="nav-item">
+          <a href="#" class="nav-link active">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">👤</span>
+            <span>My Profile</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">📅</span>
+            <span>Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">📚</span>
+            <span>Classwork</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">📝</span>
+            <span>Assignments</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="nav-icon">🚪</span>
+            <span>Log Out</span>
+          </a>
+        </li>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="search-bar">
+          <input type="text" placeholder="Search everything...">
+        </div>
+        <div class="top-bar-right">
+          <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">+ New Schedule</button>
+          <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">↑ Send Message</button>
+          <div class="user-profile">
+            <div class="user-avatar">K</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GREETING SECTION -->
+      <div class="greeting-section">
+        <div class="greeting-title">Good morning, Kanishka!</div>
+        <div class="greeting-subtitle">Welcome back to your campus portal. Here's what's happening today across your courses and labs.</div>
+
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-number">4</div>
+            <div class="stat-label">Classes Today</div>
+          </div>
+          <div class="stat-card" style="border-left-color: var(--color-accent-green);">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number">2</div>
+            <div class="stat-label">Completed Tasks</div>
+          </div>
+          <div class="stat-card" style="border-left-color: var(--color-accent-orange);">
+            <div class="stat-icon">📋</div>
+            <div class="stat-number">3</div>
+            <div class="stat-label">Upcoming Tasks</div>
+          </div>
+          <div class="stat-card" style="border-left-color: var(--color-accent-red);">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-number">1</div>
+            <div class="stat-label">Due Soon</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD GRID -->
+      <div class="dashboard-grid">
+        <!-- SCHEDULE SECTION -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Today's Schedule</div>
+            <a href="#" class="card-link">View full week →</a>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">09:00 AM - 11:00 AM</div>
+            <div class="schedule-title">Data Structures</div>
+            <div class="schedule-meta">Room A-305 • 2 hours</div>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">11:30 AM - 01:00 PM</div>
+            <div class="schedule-title">Web Development Lab</div>
+            <div class="schedule-meta">Lab 2 • 1.5 hours</div>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">02:00 PM - 03:30 PM</div>
+            <div class="schedule-title">Database Management Systems</div>
+            <div class="schedule-meta">Room B-401 • Online</div>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">04:00 PM - 05:00 PM</div>
+            <div class="schedule-title">Debugging Systems & Exam</div>
+            <div class="schedule-meta">Lab • In Lab Exam coming</div>
+          </div>
+        </div>
+
+        <!-- DEADLINES SECTION -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Upcoming Deadlines</div>
+            <a href="#" class="card-link">See all →</a>
+          </div>
+
+          <div class="deadline-item">
+            <div class="deadline-info">
+              <div class="deadline-title">Data Structures Assignment</div>
+              <div class="deadline-time">Due Oct 27 2024 • 11:59 PM</div>
+            </div>
+            <span class="deadline-badge">3 days left</span>
+          </div>
+
+          <div class="deadline-item">
+            <div class="deadline-info">
+              <div class="deadline-title">Web Dev Project Submission</div>
+              <div class="deadline-time">Due Oct 28 2024 • 06:00 PM</div>
+            </div>
+            <span class="deadline-badge">4 days left</span>
+          </div>
+
+          <div class="deadline-item">
+            <div class="deadline-info">
+              <div class="deadline-title">Database Lab Report</div>
+              <div class="deadline-time">Due Oct 30 2024 • 05:00 PM</div>
+            </div>
+            <span class="deadline-badge">6 days left</span>
+          </div>
+
+          <div class="deadline-item">
+            <div class="deadline-info">
+              <div class="deadline-title">Java Programming Quiz</div>
+              <div class="deadline-time">Due Oct 31 2024 • 02:00 PM</div>
+            </div>
+            <span class="deadline-badge" style="background-color: var(--color-accent-red);">2 days left</span>
+          </div>
+        </div>
+
+        <!-- SCHEDULE AND ACTIVITIES -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Schedule</div>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">Data Structures - 09:30 AM</div>
+            <div class="schedule-title">Room A • Ongoing (56%)</div>
+            <div class="schedule-meta">Ends at 11 AM</div>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">Web Development Lab</div>
+            <div class="schedule-title">Acts of 3 • Upcoming</div>
+            <div class="schedule-meta">Starts at 11:30 AM</div>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">Database Management Systems</div>
+            <div class="schedule-title">Room B-401 • Online</div>
+            <div class="schedule-meta">Starting at 02:00 PM • 1:30 min</div>
+          </div>
+
+          <div class="schedule-item">
+            <div class="schedule-time">Debugging Systems &amp; Exam</div>
+            <div class="schedule-title">Lab • In Lab Exam</div>
+            <div class="schedule-meta">Starts at 04:00 PM • 01:00 min</div>
+          </div>
+        </div>
+
+        <!-- ACTIVITIES/MESSAGES -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Messages</div>
+            <a href="#" class="card-link">All messages →</a>
+          </div>
+
+          <div class="message-item">
+            <div class="message-header">
+              <div class="message-avatar">PR</div>
+              <div class="message-content">
+                <div class="message-sender">Dr. Priya Patel</div>
+                <div class="message-time">Oct 24 2024 • 3:45 PM</div>
+              </div>
+            </div>
+            <div class="message-text">Please review the updated assignment instructions for next lab. Several students asked for clarification.</div>
+          </div>
+
+          <div class="message-item">
+            <div class="message-header">
+              <div class="message-avatar">PA</div>
+              <div class="message-content">
+                <div class="message-sender">Prof. Arun Kumar</div>
+                <div class="message-time">Yesterday</div>
+              </div>
+            </div>
+            <div class="message-text">Check Lab 2. Important deadline. Details available via Assignments. We'll start collecting your work from today onwards.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="right-sidebar">
+      <div class="announcement-card">
+        <div class="announcement-tag">📢 Academic Notice</div>
+        <div class="announcement-title">Your Campus. Your Community. One Place.</div>
+        <div class="announcement-text">Everything you need to stay connected with your campus life — right here. Notify and campus key notification and upcoming events.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="margin-bottom: var(--spacing-lg);">Quick Actions</div>
+
+        <div class="quick-actions">
+          <div class="action-item">
+            <div class="action-icon">📚</div>
+            <div class="action-label">Browse Activities</div>
+          </div>
+          <div class="action-item">
+            <div class="action-icon">📞</div>
+            <div class="action-label">Contact Faculty</div>
+          </div>
+          <div class="action-item">
+            <div class="action-icon">📎</div>
+            <div class="action-label">Resource Hub</div>
+          </div>
+          <div class="action-item">
+            <div class="action-icon">📍</div>
+            <div class="action-label">View Attendance</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="margin-bottom: var(--spacing-lg);">Campus Facilities & Study Hubs</div>
+
+        <div class="gallery-container">
+          <div class="gallery-item">
+            <div>📸 Study Nook Photo</div>
+          </div>
+          <div class="gallery-item">
+            <div>📸 Collaboration Space</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-lg); font-size: 12px;">
+          <div style="text-align: center;">
+            <div style="font-weight: 600; margin-bottom: var(--spacing-xs);">Study Location</div>
+            <a href="#" style="color: var(--color-accent-blue); text-decoration: none;">Reserve →</a>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-weight: 600; margin-bottom: var(--spacing-xs);">Collaboration Corner</div>
+            <a href="#" style="color: var(--color-accent-blue); text-decoration: none;">Reserve →</a>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- FORM MODAL -->
+  <div class="modal-overlay" id="helpPanel" role="dialog" aria-label="Academic help desk">
+    <button class="help-close" type="button" id="closeHelp" aria-label="Close help panel">×</button>
+    <div class="modal-content">
+      <div class="modal-icon">🎓</div>
+      <div class="modal-title">Need academic assistance or lab access?</div>
+      <div class="modal-description">Reach out to us and we'll connect you with the right resources in minutes.</div>
+
+      <form id="helpForm">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" id="formName" class="form-input" placeholder="Your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="formEmail" class="form-input" placeholder="your.email@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" id="formPhone" class="form-input" placeholder="+91 XXXXX XXXXX" required>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-buttons">
+      <button class="btn btn-primary" id="submitBtn">Open Help Desk</button>
+      <button class="btn btn-secondary">Campus Directory</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS/ERROR MESSAGES -->
+  <div class="success-message" id="successMessage">
+    <div style="font-size: 32px; margin-bottom: var(--spacing-md);">✅</div>
+    <div style="font-weight: 600; margin-bottom: var(--spacing-sm);">Success!</div>
+    <div>Your information has been submitted successfully.</div>
+  </div>
+
+  <div class="error-message" id="errorMessage">
+    <div style="font-size: 32px; margin-bottom: var(--spacing-md);">❌</div>
+    <div style="font-weight: 600; margin-bottom: var(--spacing-sm);">Error</div>
+    <div>Something went wrong. Please try again.</div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8eJ9q-Rpo2W16J89VGk0l7_ah4w7owz9smjEpYlCkvYXr-32L5QzwDpdTUid8b705jA/exec";
+
+    const form = document.getElementById("helpForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const successMsg = document.getElementById("successMessage");
+    const errorMsg = document.getElementById("errorMessage");
+
+    submitBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("formName").value.trim();
+      const email = document.getElementById("formEmail").value.trim();
+      const phone = document.getElementById("formPhone").value.trim();
+
+      // Validate
+      if (!name || !email || !phone) {
+        showError();
+        return;
+      }
+
+      // Build URL with query params
+      const url = SCRIPT_URL + "?" + new URLSearchParams({name, email, phone});
+
+      // Fetch with no-cors, ignore response
+      fetch(url, { method: "GET", mode: "no-cors" })
+        .then(() => showSuccess())
+        .catch(() => showError());
+    });
+
+    function showSuccess() {
+      successMsg.classList.add("show");
+      form.reset();
+      setTimeout(() => {
+        successMsg.classList.remove("show");
+      }, 3000);
+    }
+
+    function showError() {
+      errorMsg.classList.add("show");
+      setTimeout(() => {
+        errorMsg.classList.remove("show");
+      }, 3000);
+    }
+  </script>
+  </div><!-- /dashboardView -->
+  <div class="portal-toast" id="portalToast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const loginScreen = document.getElementById('loginScreen');
+      const dashboard = document.getElementById('dashboardView');
+      const loginForm = document.getElementById('loginForm');
+      const loginError = document.getElementById('loginError');
+      const toast = document.getElementById('portalToast');
+      const helpPanel = document.getElementById('helpPanel');
+      const progress = document.getElementById('scrollProgress');
+      let toastTimer;
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+      }
+
+      function showDashboard() {
+        loginScreen.hidden = true;
+        dashboard.hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        initReveal();
+        showToast('Welcome to CampusConnect. You are viewing demo data.');
+      }
+
+      function logout() {
+        helpPanel.classList.remove('open');
+        dashboard.hidden = true;
+        loginScreen.hidden = false;
+        loginForm.reset();
+        loginError.classList.remove('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast('You have returned to the demo login screen.');
+      }
+
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 4) {
+          loginError.classList.add('show');
+          return;
+        }
+        loginError.classList.remove('show');
+        showDashboard();
+      });
+
+      document.getElementById('togglePassword').addEventListener('click', () => {
+        const input = document.getElementById('loginPassword');
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        document.getElementById('togglePassword').textContent = isHidden ? 'Hide' : 'Show';
+        document.getElementById('togglePassword').setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+      });
+
+      document.getElementById('forgotPassword').addEventListener('click', (event) => {
+        event.preventDefault();
+        showToast('Password reset is a demo feature. Connect an authentication service to enable it.');
+      });
+
+      document.getElementById('closeHelp').addEventListener('click', () => helpPanel.classList.remove('open'));
+
+      // Make existing navigation links meaningful without inventing separate pages.
+      const navLinks = [...document.querySelectorAll('.nav-link')];
+      navLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const label = link.innerText.replace(/\s+/g, ' ').trim();
+          navLinks.forEach(item => item.classList.remove('active'));
+          link.classList.add('active');
+          if (/log out/i.test(label)) { logout(); return; }
+          if (/dashboard/i.test(label)) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast('You are viewing your dashboard.');
+          } else if (/schedule/i.test(label)) {
+            document.querySelector('.dashboard-grid .card')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else if (/profile/i.test(label)) {
+            document.querySelector('.user-profile')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('Profile preview: update your profile details when account services are connected.');
+          } else if (/classwork|assignments/i.test(label)) {
+            const cards = [...document.querySelectorAll('.dashboard-grid .card')];
+            (cards[1] || cards[0])?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showToast(label + ' preview — the current dashboard uses sample content.');
+          } else if (/settings/i.test(label)) {
+            document.body.classList.toggle('settings-contrast');
+            showToast('Settings demo: toggle clicked. Real preferences need to be saved to an account.');
+          }
+        });
+      });
+
+      // Search filters dashboard cards and their visible items.
+      const searchInput = document.querySelector('.search-bar input');
+      if (searchInput) {
+        searchInput.addEventListener('input', () => {
+          const query = searchInput.value.trim().toLowerCase();
+          document.querySelectorAll('.dashboard-grid .card, .right-sidebar .card, .announcement-card').forEach(card => {
+            const matches = !query || card.innerText.toLowerCase().includes(query);
+            card.style.display = matches ? '' : 'none';
+          });
+          if (query) showToast('Filtering dashboard for: ' + query);
+        });
+      }
+
+      // Quick actions and existing buttons.
+      document.querySelectorAll('.action-item').forEach((item) => {
+        item.setAttribute('role', 'button');
+        item.setAttribute('tabindex', '0');
+        const activate = () => {
+          const label = item.innerText.replace(/\s+/g, ' ').trim();
+          if (/contact faculty/i.test(label)) {
+            helpPanel.classList.add('open');
+            document.getElementById('formName')?.focus();
+          } else {
+            showToast(label + ': this is a demo action; connect your college data to enable the full feature.');
+          }
+        };
+        item.addEventListener('click', activate);
+        item.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activate(); }
+        });
+      });
+
+      const buttons = [...document.querySelectorAll('button')];
+      buttons.forEach((button) => {
+        const label = button.innerText.replace(/\s+/g, ' ').trim();
+        if (/New Schedule/i.test(label)) {
+          button.addEventListener('click', () => {
+            const title = window.prompt('Enter the name of the new schedule item:');
+            if (title && title.trim()) {
+              const scheduleCard = document.querySelector('.dashboard-grid .card');
+              const item = document.createElement('div');
+              item.className = 'schedule-item reveal is-visible';
+              const time = document.createElement('div');
+              time.className = 'schedule-time';
+              time.textContent = 'New item · Time not set';
+              const name = document.createElement('div');
+              name.className = 'schedule-title';
+              name.textContent = title.trim();
+              const meta = document.createElement('div');
+              meta.className = 'schedule-meta';
+              meta.textContent = 'Added in this browser session only';
+              item.append(time, name, meta);
+              scheduleCard?.appendChild(item);
+              showToast('Schedule item added to this page. It is not saved to a server.');
+            }
+          });
+        } else if (/Send Message/i.test(label)) {
+          button.addEventListener('click', () => {
+            const message = window.prompt('Write a short demo message to faculty:');
+            if (message && message.trim()) showToast('Message drafted. Sending requires a connected messaging service.');
+          });
+        } else if (/Campus Directory/i.test(label)) {
+          button.addEventListener('click', () => showToast('Campus Directory is a demo action. Connect your college directory to enable it.'));
+        }
+      });
+
+      document.querySelectorAll('.card-link, .gallery-container + div a').forEach(link => {
+        link.addEventListener('click', event => {
+          event.preventDefault();
+          showToast(link.innerText.trim().replace('→', '').trim() + ' is a demo link. Connect the relevant page or service to enable it.');
+        });
+      });
+
+      // Help panel is opened from Contact Faculty; its existing form handler remains in place.
+      // If the original page's help form is submitted, the existing Apps Script integration is used.
+
+      // Scroll reveal and mouse-reactive 3D tilt.
+      let revealObserver;
+      function initReveal() {
+        const targets = document.querySelectorAll('.greeting-section, .dashboard-grid .card, .right-sidebar > *, .stat-card, .announcement-card');
+        targets.forEach(el => {
+          if (!el.classList.contains('reveal')) el.classList.add('reveal');
+        });
+        if ('IntersectionObserver' in window) {
+          if (revealObserver) revealObserver.disconnect();
+          revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.08 });
+          targets.forEach(el => revealObserver.observe(el));
+        } else {
+          targets.forEach(el => el.classList.add('is-visible'));
+        }
+        document.querySelectorAll('.stat-card, .action-item, .announcement-card').forEach(card => {
+          if (card.dataset.tiltReady) return;
+          card.dataset.tiltReady = 'true';
+          card.addEventListener('pointermove', event => {
+            if (event.pointerType === 'touch' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const rect = card.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = (event.clientY - rect.top) / rect.height;
+            const rotateY = (x - .5) * 8;
+            const rotateX = (.5 - y) * 8;
+            card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+          });
+          card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+        });
+      }
+
+      function updateScrollProgress() {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const amount = max > 0 ? (window.scrollY / max) * 100 : 0;
+        progress.style.width = amount + '%';
+      }
+      window.addEventListener('scroll', updateScrollProgress, { passive: true });
+      window.addEventListener('resize', updateScrollProgress);
+      updateScrollProgress();
+
+      // Hide the dashboard until the demo login form is submitted.
+      dashboard.hidden = true;
+    })();
+  </script>
+
+</body>
+</html>
